@@ -1,12 +1,38 @@
-- 👋 Hi, I’m @saynresmi
-- 👀 I’m interested in ...
-- 🌱 I’m currently learning ...
-- 💞️ I’m looking to collaborate on ...
-- 📫 How to reach me ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
+document.addEventListener("DOMContentLoaded", function() {
+    fetchNews();
+});
 
-<!---
-saynresmi/saynresmi is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
+// Haberleri çekmek ve sayfada göstermek
+function fetchNews() {
+    fetch(API_URL)
+        .then(response => response.json())
+        .then(data => {
+            const newsContainer = document.getElementById('news-container');
+            data.articles.forEach(news => {
+                const newsCard = document.createElement('div');
+                newsCard.classList.add('news-card');
+                
+                const newsTitle = document.createElement('h3');
+                newsTitle.textContent = news.title;
+                
+                const newsDescription = document.createElement('p');
+                newsDescription.textContent = news.description;
+
+                const newsLink = document.createElement('a');
+                newsLink.href = news.url;
+                newsLink.textContent = "Devamını oku";
+                newsLink.target = "_blank";  // Yeni sekmede açmak için
+
+                // Haber kartını oluştur
+                newsCard.appendChild(newsTitle);
+                newsCard.appendChild(newsDescription);
+                newsCard.appendChild(newsLink);
+
+                // Haberi sayfada göster
+                newsContainer.appendChild(newsCard);
+            });
+        })
+        .catch(error => {
+            console.error("Haberler alınamadı: ", error);
+        });
+}
